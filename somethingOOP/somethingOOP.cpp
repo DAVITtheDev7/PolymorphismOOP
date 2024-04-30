@@ -1,51 +1,136 @@
 #include <iostream>
-#include <list>
 using namespace std;
 
-class Employee {
-protected: 
-    string name;
-    string company;
-    int age;
-public:
-    Employee(string name, string company, int age) :
-        name(name), company(company), age(age) {}
+class University {
+protected:
+	string faculty;
 
-    virtual void IntroduceYourself() {
-        cout << "Name - " << name << endl;
-        cout << "company - " << company << endl;
-        cout << "age - " << age << endl;
-    }
+public:
+	University(string faculty) {
+		setFaculty(faculty);
+	}
+
+
+	void setFaculty(string faculty) {
+		this->faculty = faculty;
+	}
+
+	void getFaculty() {
+		cout << faculty;
+	}
+
 };
 
-class Programmer : public Employee {
-private:
-    list<string> languages;
 
+class Student : public University {
+protected:
+	string fname;
+	string lname;
+	int age;
+	int id;
 public:
-    Programmer(string name, string company, int age, const list<string>& languages) :
-        Employee(name, company, age), languages(languages) {}
+	Student(string fname, string lname, int age, int id, string faculty) :
+		University(faculty), fname(fname), lname(lname), age(age), id(id) {
 
-    void IntroduceYourself() override {
-        Employee::IntroduceYourself();
-        cout << "Languages: ";
-        for (const auto& lang : languages) {
-            cout << lang << ", ";
-        }
-        cout << endl;
-    }
+	}
+
+	void setData(string fname, string lname, int age, int id, string faculty) {
+		this->fname = fname;
+		this->lname = lname;
+		this->age = age;
+		this->id = id;
+		this->faculty = faculty;
+	}
+
+
+	virtual void showInfo() {
+		cout << "First name: " << fname << endl;
+		cout << "Last name: " << lname << endl;
+		cout << "Age: " << age << endl;
+		cout << "Id: " << id << endl;
+		cout << "Faculty: " << faculty << endl << endl;
+	}
+};
+
+
+class Grade : public Student {
+private:
+	string subjects[6];
+	double grades[6], gpa[6];
+public:
+	Grade(string fname, string lname, int age, int id, string faculty) :
+		Student(fname, lname, age, id, faculty) {}
+
+
+	void setSubjects() {
+		for (int i = 0; i < 6; i++)
+		{
+			cout << "Enter Subject N" << i + 1 << ": ";
+			cin >> subjects[i];
+
+			while (true) {
+				cout << "Enter grade (between 0 and 100): ";
+				cin >> grades[i];
+				cout << endl;
+				if (grades[i] < 0 || grades[i] > 100) {
+					cout << "Invalid input. Please enter a grade between 0 and 100." << endl;
+				}
+				else {
+					break;
+				}
+			}
+
+			if (grades[i] <= 100 && grades[i] > 90) {
+				gpa[i] = 4.0;
+			}
+			else if (grades[i] <= 90 && grades[i] > 80) {
+				gpa[i] = 4.0;
+			}
+			else if (grades[i] <= 80 && grades[i] > 70) {
+				gpa[i] = 3.0;
+			}
+			else if (grades[i] <= 70 && grades[i] > 60) {
+				gpa[i] = 2.0;
+			}
+			else if (grades[i] <= 60 && grades[i] > 50) {
+				gpa[i] = 1.0;
+			}
+			else {
+				gpa[i] = 0;
+			}
+
+			system("cls");
+		}
+	}
+
+
+
+	void showInfo() {
+		Student::showInfo();
+		for (int i = 0; i < 6; i++)
+		{
+			cout << "Subject: ";
+			cout << subjects[i] << " | ";
+			cout << "Grade: ";
+			cout << grades[i] << " | ";
+			cout << "Gpa: ";
+			cout << gpa[i] << endl;
+
+		}
+	}
 };
 
 int main() {
-    Employee* e1;
 
-    list<string> p1_languages = {"Java","Kotlin","C++","Python"};
+	Student* s1;
 
-    Programmer p1("Davit", "YT", 18, p1_languages);
+	Grade g("Davit", "Mamuladze", 18, 12345, "CS");
 
-    e1 = &p1;
+	g.setSubjects();
 
-    e1->IntroduceYourself();
+	s1 = &g;
 
-    return 0;
+	s1->showInfo();
+
+
 }
